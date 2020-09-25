@@ -1,15 +1,17 @@
 terraform {
   backend "azurerm" {
-  
-  }
+    }
 }
 provider "azurerm" {
   features {}
 }
-resource "azurerm_app_service_plan" "example" {
-  name                = "docker-appserviceplan"
+
+resource "azurerm_app_service_plan" "main" {
+  name                = "docker-asp"
   location            = "eastus"
   resource_group_name = "con-tf-ex-rg"
+  kind                = "Linux"
+  reserved            = true
 
   sku {
     tier = "Standard"
@@ -17,13 +19,10 @@ resource "azurerm_app_service_plan" "example" {
   }
 }
 
-resource "azurerm_app_service" "example" {
+resource "azurerm_app_service" "main" {
   name                = "docker-app-service"
   location            = "eastus"
   resource_group_name = "con-tf-ex-rg"
-  app_service_plan_id = azurerm_app_service_plan.example.id
-
-  site_config {
-    dotnet_framework_version = "v4.0"
-    scm_type                 = "LocalGit"
-  }
+  app_service_plan_id = "${azurerm_app_service_plan.main.id}"
+  
+}
