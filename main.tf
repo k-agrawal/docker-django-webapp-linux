@@ -3,7 +3,9 @@ terraform {
   
   }
 }
-
+provider "azurerm" {
+  features {}
+}
 resource "azurerm_app_service_plan" "example" {
   name                = "docker-appserviceplan"
   location            = "eastus"
